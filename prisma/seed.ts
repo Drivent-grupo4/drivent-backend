@@ -25,13 +25,13 @@ async function main() {
         includesHotel: false,
       },
       {
-        name: "Presencial Com Hotel",
+        name: "Presencial",
         price: 600,
         isRemote: false,
         includesHotel: true,
       },
       {
-        name: "Presencial Sem Hotel",
+        name: "Presencial",
         price: 250,
         isRemote: false,
         includesHotel: false,
