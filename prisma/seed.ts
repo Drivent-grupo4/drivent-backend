@@ -70,7 +70,7 @@ async function main() {
       },
       {
         name: "103",
-        capacity: 4,
+        capacity: 3,
         hotelId: 1,
       },
       {
