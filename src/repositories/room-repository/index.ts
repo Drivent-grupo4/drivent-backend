@@ -5,9 +5,15 @@ async function findAllByHotelId(hotelId: number) {
     where: {
       hotelId,
     },
+    include: {
+      _count: {
+        select: {
+          Booking: true,
+        },
+      },
+    },
   });
 }
-
 async function findById(roomId: number) {
   return prisma.room.findFirst({
     where: {
