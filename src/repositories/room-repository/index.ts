@@ -5,7 +5,13 @@ async function findAllByHotelId(hotelId: number) {
     where: {
       hotelId,
     },
+    orderBy: [
+      {
+        id: 'asc',
+      },
+    ],
     include: {
+      Booking: true,
       _count: {
         select: {
           Booking: true,
