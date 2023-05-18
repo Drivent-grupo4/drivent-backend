@@ -7,7 +7,7 @@ async function findFirst(): Promise<Event> {
   const cachedEvent = await redis.get(cacheKey);
   // redis.del(cacheKey);
 
-  if (cachedEvent !== 'null') {
+  if (cachedEvent === 'null') {
     console.log('cached');
     return JSON.parse(cachedEvent);
   }
