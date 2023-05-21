@@ -20,6 +20,7 @@
     "test:load-envs": "dotenv -e .env.test",
     "test:seed": "npm run test:load-envs prisma db seed",
     "dev:load-envs": "dotenv -e .env.development",
+    "dev:push": "npm run dev:load-envs prisma db push",
     "dev:migration:run": "npm run dev:load-envs prisma migrate deploy",
     "dev:migration:generate": "npm run dev:load-envs prisma migrate reset dev",
     "dev:seed": "npm run dev:load-envs prisma db seed ",

@@ -144,11 +144,6 @@ async function main() {
         hotelId: 2,
       },
       {
-        name: "101",
-        capacity: 2,
-        hotelId: 2,
-      },
-      {
         name: "102",
         capacity: 2,
         hotelId: 2,

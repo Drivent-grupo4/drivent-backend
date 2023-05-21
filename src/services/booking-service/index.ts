@@ -38,19 +38,13 @@ async function bookingRoomById(userId: number, roomId: number) {
   await checkEnrollmentTicket(userId);
   await checkValidBooking(roomId);
 
-  return bookingRepository.create({ roomId, userId });
-}
-
-async function changeBookingRoomById(userId: number, roomId: number) {
-  if (!roomId) throw badRequestError();
-
-  await checkValidBooking(roomId);
   const booking = await bookingRepository.findByUserId(userId);
 
-  if (!booking || booking.userId !== userId) throw cannotBookingError();
+  if (booking !== null && booking.userId !== userId) throw cannotBookingError();
 
+  console.log(booking);
+  console.log;
   return bookingRepository.upsertBooking({
-    id: booking.id,
     roomId,
     userId,
   });
@@ -59,7 +53,6 @@ async function changeBookingRoomById(userId: number, roomId: number) {
 const bookingService = {
   bookingRoomById,
   getBooking,
-  changeBookingRoomById,
   checkEnrollmentTicket,
   checkValidBooking,
 };
