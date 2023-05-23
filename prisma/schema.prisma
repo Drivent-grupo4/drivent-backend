@@ -11,23 +11,24 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique @db.VarChar(255)
-  password   String       @db.VarChar(255)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  Session    Session[]    
-  Enrollment Enrollment[] 
-  Booking    Booking[]    
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique @db.VarChar(255)
+  password          String              @db.VarChar(255)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  Booking           Booking[]
+  BookingActivities BookingActivities[]
+  Enrollment        Enrollment?
+  Session           Session[]
 }
 
 model Session {
   id        Int      @id @default(autoincrement())
   userId    Int
-  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Event {
@@ -42,16 +43,16 @@ model Event {
 }
 
 model Enrollment {
-  id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(255)
-  cpf       String    @db.VarChar(255)
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  cpf       String   @db.VarChar(255)
   birthday  DateTime
-  phone     String    @db.VarChar(255)
-  userId    Int       @unique
-  User      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Address   Address[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  phone     String   @db.VarChar(255)
+  userId    Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Address   Address?
   Ticket    Ticket[]
 }
 
@@ -65,9 +66,9 @@ model Address {
   neighborhood  String     @db.VarChar(255)
   addressDetail String?    @db.VarChar(255)
   enrollmentId  Int        @unique
-  Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id],  onDelete: Cascade)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
 }
 
 model TicketType {
@@ -84,38 +85,33 @@ model TicketType {
 model Ticket {
   id           Int          @id @default(autoincrement())
   ticketTypeId Int
-  TicketType   TicketType   @relation(fields: [ticketTypeId], references: [id],  onDelete: Cascade)
   enrollmentId Int
-  Enrollment   Enrollment   @relation(fields: [enrollmentId], references: [id],  onDelete: Cascade)
   status       TicketStatus
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  Enrollment   Enrollment   @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  TicketType   TicketType   @relation(fields: [ticketTypeId], references: [id], onDelete: Cascade)
   Payment      Payment[]
-}
-
-enum TicketStatus {
-  RESERVED
-  PAID
 }
 
 model Payment {
   id             Int      @id @default(autoincrement())
   ticketId       Int
-  Ticket         Ticket   @relation(fields: [ticketId], references: [id],  onDelete: Cascade)
   value          Int
   cardIssuer     String
   cardLastDigits String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  Ticket         Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 }
 
 model Hotel {
   id        Int      @id @default(autoincrement())
   name      String
   image     String
-  Rooms     Room[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Rooms     Room[]
 }
 
 model Room {
@@ -123,23 +119,65 @@ model Room {
   name      String
   capacity  Int
   hotelId   Int
-  Hotel     Hotel     @relation(fields: [hotelId], references: [id],  onDelete: Cascade)
-  Booking   Booking[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  Hotel     Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  Booking   Booking[]
 }
 
 model Booking {
   id        Int      @id @default(autoincrement())
-  User      User     @relation(fields: [userId], references: [id],  onDelete: Cascade)
-  userId    Int      @unique
-  Room      Room     @relation(fields: [roomId], references: [id],  onDelete: Cascade)
+  userId    Int
   roomId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Teste {
-  id    Int    @id @default(autoincrement())
-  name  String
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model Activities {
+  id                Int                 @id @default(autoincrement())
+  activitiesPlaceId Int
+  activityDayId     Int
+  name              String              @db.VarChar(255)
+  startTime         DateTime            @default(now()) @db.Date
+  endTime           DateTime            @default(now()) @db.Date
+  capacity          Int
+  ActivitiesPlace   ActivitiesPlace     @relation(fields: [activitiesPlaceId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_activitiesplace")
+  ActivitiesDays    ActivitiesDays      @relation(fields: [activityDayId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_activityday")
+  BookingActivities BookingActivities[]
+}
+
+model ActivitiesDays {
+  id         Int          @id @default(autoincrement())
+  date       DateTime     @db.Date
+  createdAt  DateTime     @default(now()) @db.Date
+  updatedAt  DateTime     @default(now()) @db.Date
+  Activities Activities[]
+}
+
+model ActivitiesPlace {
+  id         Int          @id @default(autoincrement())
+  namePlace  String       @db.VarChar(255)
+  Activities Activities[]
+}
+
+model BookingActivities {
+  id           Int        @id @default(autoincrement())
+  activitiesId Int
+  userId       Int
+  createdAt    DateTime   @default(now()) @db.Date
+  updatedAt    DateTime   @default(now()) @db.Date
+  Activities   Activities @relation(fields: [activitiesId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_activities")
+  User         User       @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users")
+}
+
+enum TicketStatus {
+  RESERVED
+  PAID
 }
