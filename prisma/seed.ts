@@ -201,6 +201,119 @@ async function main() {
     ]
   })
 
+  await prisma.activitiesDays.createMany({
+    data: [
+      {
+        date: new Date('2023-05-19')
+      },
+      {
+        date: new Date('2023-05-20')
+      },
+      {
+        date: new Date('2023-05-21')
+      },
+    ]
+  })
+
+  await prisma.activitiesPlace.createMany({
+    data: [
+      {
+        namePlace: "Auditório Principal"
+      },
+      {
+        namePlace: "Auditório Lateral"
+      },
+      {
+        namePlace: "Sala de Workshop"
+      },
+    ]
+  })
+
+  await prisma.activities.createMany({
+    data: [
+      {
+        activitiesPlaceId: 1,
+        activityDayId: 1, 
+        name: "Organization House",
+        startTime: new Date('2023-05-19 09:00:00Z'),
+        endTime: new Date('2023-05-19 10:00:00Z'),
+        capacity: 27
+      },
+      {
+        activitiesPlaceId: 1,
+        activityDayId: 1, 
+        name: "Real Division",
+        startTime: new Date('2023-05-19 10:00:00Z'),
+        endTime: new Date('2023-05-19 11:00:00Z'),
+        capacity: 29
+      },
+      {
+        activitiesPlaceId: 2,
+        activityDayId: 1, 
+        name: "Ever Plantopia",
+        startTime: new Date('2023-05-19 09:00:00Z'),
+        endTime: new Date('2023-05-19 11:00:00Z'),
+        capacity: 14
+      },
+      {
+        activitiesPlaceId: 3,
+        activityDayId: 1, 
+        name: "Show Right Functions",
+        startTime: new Date('2023-05-19 09:00:00Z'),
+        endTime: new Date('2023-05-19 10:00:00Z'),
+        capacity: 14
+      },
+      {
+        activitiesPlaceId: 3,
+        activityDayId: 1, 
+        name: "Brilliant On The Go",
+        startTime: new Date('2023-05-19 10:00:00Z'),
+        endTime: new Date('2023-05-19 09:00:00Z'),
+        capacity: 14
+      },
+      {
+        activitiesPlaceId: 1,
+        activityDayId: 2, 
+        name: "Organization House",
+        startTime: new Date('2023-05-19 09:00:00Z'),
+        endTime: new Date('2023-05-19 10:00:00Z'),
+        capacity: 1
+      },
+      {
+        activitiesPlaceId: 1,
+        activityDayId: 2, 
+        name: "Real Division",
+        startTime: new Date('2023-05-19 10:00:00Z'),
+        endTime: new Date('2023-05-19 11:00:00Z'),
+        capacity: 29
+      },
+      {
+        activitiesPlaceId: 2,
+        activityDayId: 3, 
+        name: "Ever Plantopia",
+        startTime: new Date('2023-05-19 09:00:00Z'),
+        endTime: new Date('2023-05-19 11:00:00Z'),
+        capacity: 0
+      },
+      {
+        activitiesPlaceId: 3,
+        activityDayId: 3, 
+        name: "Show Right Functions",
+        startTime: new Date('2023-05-19 09:00:00Z'),
+        endTime: new Date('2023-05-19 10:00:00Z'),
+        capacity: 10
+      },
+      {
+        activitiesPlaceId: 3,
+        activityDayId: 3, 
+        name: "Brilliant On The Go",
+        startTime: new Date('2023-05-19 10:00:00Z'),
+        endTime: new Date('2023-05-19 09:00:00Z'),
+        capacity: 23
+      },
+    ]
+  })
+
   console.log({ event });
 }
 

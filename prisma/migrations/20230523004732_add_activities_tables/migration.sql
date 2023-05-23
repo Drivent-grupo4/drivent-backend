@@ -4,8 +4,8 @@ CREATE TABLE "Activities" (
     "activitiesPlaceId" INTEGER NOT NULL,
     "activityDayId" INTEGER NOT NULL,
     "name" VARCHAR(255) NOT NULL,
-    "startTime" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "endTime" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "startTime" TIMESTAMP(3) NOT NULL,
+    "endTime" TIMESTAMP(3) NOT NULL,
     "capacity" INTEGER NOT NULL,
 
     CONSTRAINT "Activities_pkey" PRIMARY KEY ("id")
@@ -15,8 +15,8 @@ CREATE TABLE "Activities" (
 CREATE TABLE "ActivitiesDays" (
     "id" SERIAL NOT NULL,
     "date" DATE NOT NULL,
-    "createdAt" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "ActivitiesDays_pkey" PRIMARY KEY ("id")
 );
@@ -34,8 +34,8 @@ CREATE TABLE "BookingActivities" (
     "id" SERIAL NOT NULL,
     "activitiesId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
-    "createdAt" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "BookingActivities_pkey" PRIMARY KEY ("id")
 );
