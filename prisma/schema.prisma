@@ -148,8 +148,8 @@ model Activities {
   startTime         DateTime            @default(now()) @db.Date
   endTime           DateTime            @default(now()) @db.Date
   capacity          Int
-  ActivitiesPlace   ActivitiesPlace     @relation(fields: [activitiesPlaceId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_activitiesplace")
-  ActivitiesDays    ActivitiesDays      @relation(fields: [activityDayId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_activityday")
+  ActivitiesPlace   ActivitiesPlace     @relation(fields: [activitiesPlaceId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_activitiesplace")
+  ActivitiesDays    ActivitiesDays      @relation(fields: [activityDayId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_activityday")
   BookingActivities BookingActivities[]
 }
 
@@ -173,8 +173,8 @@ model BookingActivities {
   userId       Int
   createdAt    DateTime   @default(now()) @db.Date
   updatedAt    DateTime   @default(now()) @db.Date
-  Activities   Activities @relation(fields: [activitiesId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_activities")
-  User         User       @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users")
+  Activities   Activities @relation(fields: [activitiesId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_activities")
+  User         User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_users")
 }
 
 enum TicketStatus {
