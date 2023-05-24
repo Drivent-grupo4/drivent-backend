@@ -10,14 +10,14 @@ async function getActivitiesDays() {
 
 async function getAllActivities() {
   const allActivities = await activitiesRepository.getAllActivities();
-  if (!allActivities) throw notFoundError();
+  if (!allActivities || !allActivities[0]) throw notFoundError();
 
   return allActivities;
 }
 
 async function getActivitiesPlaces() {
   const activities = await activitiesRepository.findActivitiesPlaces();
-  if (!activities) throw notFoundError();
+  if (!activities || !activities[0]) throw notFoundError();
 
   return activities;
 }
