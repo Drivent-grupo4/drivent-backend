@@ -8,4 +8,22 @@ async function getActivitiesDays() {
   return activities;
 }
 
-export default { getActivitiesDays };
+async function getAllActivities() {
+  const allActivities = await activitiesRepository.getAllActivities();
+  if (!allActivities) throw notFoundError();
+
+  return allActivities;
+}
+
+async function getActivitiesPlaces() {
+  const activities = await activitiesRepository.findActivitiesPlaces();
+  if (!activities) throw notFoundError();
+
+  return activities;
+}
+
+export default {
+  getActivitiesDays,
+  getAllActivities,
+  getActivitiesPlaces,
+};

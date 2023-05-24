@@ -13,3 +13,21 @@ export async function getActivitiesDays(req: AuthenticatedRequest, res: Response
     next(error);
   }
 }
+
+export async function getAllActivities(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const allActivities = await activitiesService.getAllActivities();
+    return res.status(httpStatus.OK).send(allActivities);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getActivitiesPlaces(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const activities = await activitiesService.getActivitiesPlaces();
+    return res.status(httpStatus.OK).send(activities);
+  } catch (error) {
+    next(error);
+  }
+}
