@@ -159,6 +159,8 @@ model ActivitiesDays {
   createdAt  DateTime     @default(now()) @db.Date
   updatedAt  DateTime     @default(now()) @db.Date
   Activities Activities[]
+
+  @@index([date])
 }
 
 model ActivitiesPlace {
