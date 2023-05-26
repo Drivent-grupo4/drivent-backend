@@ -267,8 +267,8 @@ async function main() {
         activitiesPlaceId: 3,
         activityDayId: 1, 
         name: "Brilliant On The Go",
-        startTime: new Date('2023-05-19 10:00:00Z'),
-        endTime: new Date('2023-05-19 09:00:00Z'),
+        startTime: new Date('2023-05-19 09:00:00Z'),
+        endTime: new Date('2023-05-19 10:00:00Z'),
         capacity: 14
       },
       {
@@ -307,8 +307,8 @@ async function main() {
         activitiesPlaceId: 3,
         activityDayId: 3, 
         name: "Brilliant On The Go",
-        startTime: new Date('2023-05-19 10:00:00Z'),
-        endTime: new Date('2023-05-19 09:00:00Z'),
+        startTime: new Date('2023-05-19 09:00:00Z'),
+        endTime: new Date('2023-05-19 10:00:00Z'),
         capacity: 23
       },
     ]
