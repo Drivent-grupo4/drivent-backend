@@ -42,8 +42,6 @@ async function bookingRoomById(userId: number, roomId: number) {
 
   if (booking !== null && booking.userId !== userId) throw cannotBookingError();
 
-  console.log(booking);
-  console.log;
   return bookingRepository.upsertBooking({
     roomId,
     userId,
