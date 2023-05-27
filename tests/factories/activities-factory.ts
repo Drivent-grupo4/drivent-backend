@@ -1,5 +1,5 @@
 import faker from '@faker-js/faker';
-import { Activities, ActivitiesDays, ActivitiesPlace } from '@prisma/client';
+import { Activities, ActivitiesDays, ActivitiesPlace, BookingActivities } from '@prisma/client';
 import { prisma } from '@/config';
 
 export function createActivitiesDay() {
@@ -27,6 +27,67 @@ export function createActivities(dayId: number, placeId: number) {
       startTime: faker.datatype.datetime(),
       endTime: faker.datatype.datetime(),
       capacity: faker.datatype.number(),
+    },
+  });
+}
+
+export function createActivityOneCapacity(dayId: number, placeId: number) {
+  return prisma.activities.create({
+    data: {
+      activitiesPlaceId: dayId,
+      activityDayId: placeId,
+      name: faker.datatype.string(),
+      startTime: faker.datatype.datetime(),
+      endTime: faker.datatype.datetime(),
+      capacity: 1,
+    },
+  });
+}
+
+export function createConflictingActivity(dayId: number, placeId: number, startTime: Date, endTime: Date) {
+  return prisma.activities.create({
+    data: {
+      activitiesPlaceId: dayId,
+      activityDayId: placeId,
+      name: faker.datatype.string(),
+      startTime: startTime,
+      endTime: endTime,
+      capacity: faker.datatype.number(),
+    },
+  });
+}
+
+export function createConflictingStartActivity(dayId: number, placeId: number) {
+  return prisma.activities.create({
+    data: {
+      activitiesPlaceId: dayId,
+      activityDayId: placeId,
+      name: faker.datatype.string(),
+      startTime: '2066-10-23T00:04:09.772Z',
+      endTime: '2066-10-23T02:04:09.772Z',
+      capacity: faker.datatype.number(),
+    },
+  });
+}
+
+export function createConflictingEndActivity(dayId: number, placeId: number) {
+  return prisma.activities.create({
+    data: {
+      activitiesPlaceId: dayId,
+      activityDayId: placeId,
+      name: faker.datatype.string(),
+      startTime: '2066-10-23T01:04:09.772Z',
+      endTime: '2066-10-23T03:04:09.772Z',
+      capacity: faker.datatype.number(),
+    },
+  });
+}
+
+export function createActivityBooking(activitiesId: number, userId: number) {
+  return prisma.bookingActivities.create({
+    data: {
+      activitiesId,
+      userId,
     },
   });
 }

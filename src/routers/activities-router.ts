@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import { authenticateToken } from '@/middlewares';
-import { getActivitiesDays, getActivitiesPlaces, getAllActivities } from '@/controllers/activities-controller';
+import {
+  bookActivity,
+  getActivitiesDays,
+  getActivitiesPlaces,
+  getAllActivities,
+} from '@/controllers/activities-controller';
 
 const activitiesRouter = Router();
 
@@ -8,6 +13,7 @@ activitiesRouter
   .all('/*', authenticateToken)
   .get('/', getActivitiesDays)
   .get('/all', getAllActivities)
-  .get('/places', getActivitiesPlaces);
+  .get('/places', getActivitiesPlaces)
+  .post('/booking/:activityId', bookActivity);
 
 export { activitiesRouter };

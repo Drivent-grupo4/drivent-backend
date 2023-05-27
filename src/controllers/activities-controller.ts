@@ -31,3 +31,17 @@ export async function getActivitiesPlaces(req: AuthenticatedRequest, res: Respon
     next(error);
   }
 }
+
+export async function bookActivity(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req;
+    const activityId = Number(req.params.activityId);
+    const booking = await activitiesService.bookActivity(activityId, userId);
+
+    return res.status(httpStatus.OK).send({
+      booking: booking.Activities,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
