@@ -33,7 +33,7 @@ async function findBookingsByActivity(activitiesId: number) {
   });
 }
 
-async function findActivityByTime(userId: number, startTime: Date, endTime: Date) {
+async function findActivityByTime(userId: number, activityDayId: number) {
   return prisma.bookingActivities.findFirst({
     where: {
       userId,
@@ -41,10 +41,7 @@ async function findActivityByTime(userId: number, startTime: Date, endTime: Date
         Activities: {
           OR: [
             {
-              startTime,
-            },
-            {
-              endTime,
+              activityDayId,
             },
           ],
         },
