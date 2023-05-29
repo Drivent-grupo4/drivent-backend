@@ -18,6 +18,6 @@ activitiesRouter
   .get('/places', getActivitiesPlaces)
   .get('/booking', getActivitiesByUser)
   .get('/booking/:activityId', getBookingsByActivity)
-  .put('/booking/:activityId', bookUserActivity);
+  .post('/booking/:activityId', bookUserActivity);
 
 export { activitiesRouter };
