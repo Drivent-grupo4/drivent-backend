@@ -178,24 +178,26 @@ describe('GET /activities/all', () => {
 
 describe('POST /activities/booking', () => {
   it('should respond with status 401 if no token is given', async () => {
-    const response = await server.get('/activities/booking');
+    const id = faker.random.numeric();
+    const response = await server.post(`/activities/booking/${id}`);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
 
   it('should respond with status 401 if given token is not valid', async () => {
     const token = faker.lorem.word();
-
-    const response = await server.get('/activities/all').set('Authorization', `Bearer ${token}`);
+    const id = faker.random.numeric();
+    const response = await server.post(`/activities/booking/${id}`).set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
 
   it('should respond with status 401 if there is no session for given token', async () => {
     const userWithoutSession = await createUser();
+    const id = faker.random.numeric();
     const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
 
-    const response = await server.get('/activities/all').set('Authorization', `Bearer ${token}`);
+    const response = await server.post(`/activities/booking/${id}`).set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });

@@ -25,6 +25,14 @@ async function findActivityById(id: number) {
   });
 }
 
+async function findBookingsByUserId(userId: number) {
+  return prisma.bookingActivities.findMany({
+    where: {
+      userId,
+    },
+  });
+}
+
 async function findBookingsByActivity(activitiesId: number) {
   return prisma.bookingActivities.findMany({
     where: {
@@ -84,4 +92,5 @@ export default {
   findActivityById,
   findBookingsByActivity,
   findActivityByTime,
+  findBookingsByUserId,
 };

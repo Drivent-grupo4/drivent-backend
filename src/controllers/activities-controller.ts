@@ -32,10 +32,32 @@ export async function getActivitiesPlaces(req: AuthenticatedRequest, res: Respon
   }
 }
 
-export async function bookActivity(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function getActivitiesByUser(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;
+    const activities = await activitiesService.getActivitiesByUserId(userId);
+    return res.status(httpStatus.OK).send(activities);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getBookingsByActivity(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
     const activityId = Number(req.params.activityId);
+    const bookings = await activitiesService.getActivitiesByActivityId(activityId);
+    return res.status(httpStatus.OK).send(bookings);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function bookUserActivity(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req;
+
+    const activityId = Number(req.params.activityId);
+
     const booking = await activitiesService.bookActivity(activityId, userId);
 
     return res.status(httpStatus.OK).send({

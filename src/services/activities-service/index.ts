@@ -24,6 +24,18 @@ async function getActivitiesPlaces() {
   return activities;
 }
 
+async function getActivitiesByUserId(userId: number) {
+  const activities = await activitiesRepository.findBookingsByUserId(userId);
+
+  return activities;
+}
+
+async function getActivitiesByActivityId(activitiesId: number) {
+  const activities = await activitiesRepository.findBookingsByActivity(activitiesId);
+
+  return activities;
+}
+
 async function bookActivity(activitiesId: number, userId: number) {
   const booking = await bookingRepository.findByUserId(userId);
 
@@ -53,4 +65,6 @@ export default {
   getAllActivities,
   getActivitiesPlaces,
   bookActivity,
+  getActivitiesByUserId,
+  getActivitiesByActivityId,
 };
