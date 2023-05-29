@@ -200,6 +200,27 @@ describe('POST /activities/booking', () => {
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
   describe('when token is valid', () => {
+    it('should respond with status 403 if there is no booking', async () => {
+      const user = await createUser();
+      const bookedUser = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createTicketTypeWithHotel();
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      await createPayment(ticket.id, ticketType.price);
+      const hotel = await createHotel();
+      const room = await createRoomWithHotelId(hotel.id);
+      const day = await createActivitiesDay();
+      const place = await createActivitiesPlace();
+      const activities = await createActivityOneCapacity(day.id, place.id);
+
+      const response = await server
+        .post(`/activities/booking/${activities.id}`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(httpStatus.FORBIDDEN);
+    });
+
     it('should respond with status 404 if there is no activity', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
@@ -243,27 +264,34 @@ describe('POST /activities/booking', () => {
       expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
 
-    // it('should respond with 403 if there is conflicting between both starting times', async () => {
-    //   const user = await createUser();
-    //   const token = await generateValidToken(user);
-    //   const enrollment = await createEnrollmentWithAddress(user);
-    //   const ticketType = await createTicketTypeWithHotel();
-    //   const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-    //   await createPayment(ticket.id, ticketType.price);
+    it('should respond with 403 if there is conflicting between both starting times', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createTicketTypeWithHotel();
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      await createPayment(ticket.id, ticketType.price);
 
-    //   const hotel = await createHotel();
-    //   const room = await createRoomWithHotelId(hotel.id);
-    //   await createBooking({ userId: user.id, roomId: room.id });
-    //   const day = await createActivitiesDay();
-    //   const place = await createActivitiesPlace();
-    //   const activities = await createActivities(day.id, place.id);
-    //   const secondActivity = await createConflictingActivity(day.id, place.id, activities.startTime, activities.endTime)
-    //   await createActivityBooking(activities.id, user.id)
+      const hotel = await createHotel();
+      const room = await createRoomWithHotelId(hotel.id);
+      await createBooking({ userId: user.id, roomId: room.id });
+      const day = await createActivitiesDay();
+      const place = await createActivitiesPlace();
+      const activities = await createActivities(day.id, place.id);
+      const secondActivity = await createConflictingActivity(
+        day.id,
+        place.id,
+        activities.startTime,
+        activities.endTime,
+      );
+      await createActivityBooking(activities.id, user.id);
 
-    //   const response = await server.post(`/activities/booking/${secondActivity.id}`).set('Authorization', `Bearer ${token}`);
+      const response = await server
+        .post(`/activities/booking/${secondActivity.id}`)
+        .set('Authorization', `Bearer ${token}`);
 
-    //   expect(response.status).toBe(httpStatus.FORBIDDEN);
-    // });
+      expect(response.status).toBe(httpStatus.FORBIDDEN);
+    });
 
     it('should respond with 403 if activity starts before previous activity has ended', async () => {
       const user = await createUser();
@@ -279,10 +307,8 @@ describe('POST /activities/booking', () => {
       const day = await createActivitiesDay();
       const place = await createActivitiesPlace();
       const activities = await createConflictingStartActivity(day.id, place.id);
-      console.log('first activity test', activities);
       await createActivityBooking(activities.id, user.id);
       const secondActivity = await createConflictingEndActivity(day.id, place.id);
-      console.log('second activity test', secondActivity);
 
       const response = await server
         .post(`/activities/booking/${secondActivity.id}`)
@@ -291,24 +317,26 @@ describe('POST /activities/booking', () => {
       expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
 
-    // it('should respond with 200 and activity info on success', async () => {
-    //   const user = await createUser();
-    //   const token = await generateValidToken(user);
-    //   const enrollment = await createEnrollmentWithAddress(user);
-    //   const ticketType = await createTicketTypeWithHotel();
-    //   const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-    //   await createPayment(ticket.id, ticketType.price);
+    it('should respond with 200 and activity info on success', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createTicketTypeWithHotel();
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      await createPayment(ticket.id, ticketType.price);
 
-    //   const hotel = await createHotel();
-    //   const room = await createRoomWithHotelId(hotel.id);
-    //   await createBooking({ userId: user.id, roomId: room.id });
-    //   const day = await createActivitiesDay();
-    //   const place = await createActivitiesPlace();
-    //   const activities = await createActivities(day.id, place.id);
+      const hotel = await createHotel();
+      const room = await createRoomWithHotelId(hotel.id);
+      await createBooking({ userId: user.id, roomId: room.id });
+      const day = await createActivitiesDay();
+      const place = await createActivitiesPlace();
+      const activities = await createActivities(day.id, place.id);
 
-    //   const response = await server.post(`/activities/booking/${activities.id}`).set('Authorization', `Bearer ${token}`);
+      const response = await server
+        .post(`/activities/booking/${activities.id}`)
+        .set('Authorization', `Bearer ${token}`);
 
-    //   expect(response.status).toBe(httpStatus.OK);
-    // });
+      expect(response.status).toBe(httpStatus.OK);
+    });
   });
 });
